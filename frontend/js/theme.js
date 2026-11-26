@@ -84,4 +84,11 @@
       main.classList.remove("page-leaving");
     }
   });
+
+  // Registra Service Worker para instalação como PWA (Android/Firefox/Chrome)
+  if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+  }
 })();
