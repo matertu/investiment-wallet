@@ -81,12 +81,32 @@
     <!-- Bloco 1: Renda Variável -->
     <section class="card">
       <div class="section-header">
-        <div>
+        <div class="section-title-group">
           <h2>Renda Variável</h2>
           <span class="badge-muted">Ações, FIIs e ETFs</span>
         </div>
         <a href="aportes.html" class="btn btn-primary btn-sm nav-transition">+ Novo Aporte</a>
       </div>
+
+      <div id="rv-totals-bar" class="section-totals-bar">
+        <div class="section-total-item">
+          <span class="section-total-label">Total Aportado</span>
+          <strong id="rv-total-aportado" class="section-total-value">R$ 0,00</strong>
+        </div>
+        <div class="section-total-item">
+          <span class="section-total-label">Total Atual</span>
+          <strong id="rv-total-atual" class="section-total-value">R$ 0,00</strong>
+        </div>
+        <div class="section-total-item">
+          <span class="section-total-label">Rentabilidade (R$)</span>
+          <strong id="rv-total-rent-rs" class="section-total-value neu">R$ 0,00</strong>
+        </div>
+        <div class="section-total-item">
+          <span class="section-total-label">Rentabilidade (%)</span>
+          <strong id="rv-total-rent-pct" class="section-total-value neu">0,00%</strong>
+        </div>
+      </div>
+
       <div class="table-wrapper">
         <table>
           <thead>
@@ -97,12 +117,13 @@
               <th class="num">Valor Aportado</th>
               <th class="num">V. Atual</th>
               <th class="num">Total Atual</th>
+              <th class="num">Rentab. R$</th>
               <th class="num">Rentab. %</th>
             </tr>
           </thead>
           <tbody id="tbody-rv">
             <tr>
-              <td colspan="7" class="empty-cell">Carregando...</td>
+              <td colspan="8" class="empty-cell">Carregando...</td>
             </tr>
           </tbody>
         </table>
@@ -114,7 +135,7 @@
       <div class="section-header">
         <div>
           <h2>Renda Fixa</h2>
-          <span class="badge-muted">Cálculo automático via Banco Central (CDI/SELIC/IPCA) ou manual</span>
+          <span class="badge-muted">CDI, SELIC e IPCA</span>
         </div>
       </div>
       <div class="table-wrapper">

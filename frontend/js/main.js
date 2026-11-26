@@ -11,6 +11,10 @@ const {
 const elBtnRecarregar = document.getElementById("btn-recarregar");
 const elTbodyRV = document.getElementById("tbody-rv");
 const elTbodyRF = document.getElementById("tbody-rf");
+const elRvTotalAportado = document.getElementById("rv-total-aportado");
+const elRvTotalAtual = document.getElementById("rv-total-atual");
+const elRvTotalRentRs = document.getElementById("rv-total-rent-rs");
+const elRvTotalRentPct = document.getElementById("rv-total-rent-pct");
 
 // Modal Saldo RF
 const elModalRF = document.getElementById("modal-saldo-rf");
@@ -20,17 +24,45 @@ const elModalRFAtivoId = document.getElementById("modal-rf-ativo-id");
 const elModalRFValor = document.getElementById("modal-rf-valor");
 const elBtnFecharModal = document.getElementById("btn-fechar-modal");
 
+function renderTotaisRV(items) {
+  const totalAportado = items.reduce(
+    (acc, item) => acc + (Number(item.total_investido) || 0),
+    0
+  );
+  const totalAtual = items.reduce(
+    (acc, item) => acc + (Number(item.total_atual) || 0),
+    0
+  );
+  const rentRs = totalAtual - totalAportado;
+  const rentPct = totalAportado > 0 ? (rentRs / totalAportado) * 100 : 0;
+  const rentClass = rentRs > 0 ? "pos" : rentRs < 0 ? "neg" : "neu";
+
+  elRvTotalAportado.textContent = formatCurrency(totalAportado);
+  elRvTotalAtual.textContent = formatCurrency(totalAtual);
+  elRvTotalRentRs.textContent = `${rentRs > 0 ? "+" : ""}${formatCurrency(rentRs)}`;
+  elRvTotalRentRs.className = `section-total-value ${rentClass}`;
+  elRvTotalRentPct.textContent = formatPercent(rentPct);
+  elRvTotalRentPct.className = `section-total-value ${rentClass}`;
+}
+
 function renderRendaVariavel(items) {
+  renderTotaisRV(items);
+
   if (!items.length) {
     elTbodyRV.innerHTML =
-      '<tr><td colspan="7" class="empty-cell">Nenhum ativo de renda variável em carteira.</td></tr>';
+      '<tr><td colspan="8" class="empty-cell">Nenhum ativo de renda variável em carteira.</td></tr>';
     return;
   }
 
   elTbodyRV.innerHTML = items
     .map((item) => {
+      const totalInvestido = Number(item.total_investido) || 0;
+      const totalAtual = Number(item.total_atual) || 0;
+      const rentRs = totalAtual - totalInvestido;
       const rent = Number(item.rentabilidade_pct) || 0;
-      const rentClass = rent > 0 ? "pos" : rent < 0 ? "neg" : "neu";
+      const rentClass = rentRs > 0 ? "pos" : rentRs < 0 ? "neg" : "neu";
+      const rentRsFmt = `${rentRs > 0 ? "+" : ""}${formatCurrency(rentRs)}`;
+
       return `
         <tr>
           <td>
@@ -39,9 +71,10 @@ function renderRendaVariavel(items) {
           </td>
           <td class="num">${formatNumber(item.quantidade_total)}</td>
           <td class="num">${formatCurrency(item.preco_medio)}</td>
-          <td class="num">${formatCurrency(item.total_investido)}</td>
+          <td class="num">${formatCurrency(totalInvestido)}</td>
           <td class="num">${formatCurrency(item.preco_atual)}</td>
-          <td class="num">${formatCurrency(item.total_atual)}</td>
+          <td class="num">${formatCurrency(totalAtual)}</td>
+          <td class="num ${rentClass}">${rentRsFmt}</td>
           <td class="num ${rentClass}">${formatPercent(rent)}</td>
         </tr>
       `;
