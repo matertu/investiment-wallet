@@ -15,19 +15,20 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <div>
-        <h1>Dashboard da Carteira</h1>
+        <h1>Dashboard</h1>
         <p class="subtitle">Alocação, peso por ativo, evolução de aportes e comparativo com o CDI</p>
       </div>
       <div class="topbar-actions">
         <nav class="topnav" aria-label="Navegação principal">
           <a href="index.html" class="nav-link">Carteira</a>
+          <a href="aportes.html" class="nav-link">Aportes</a>
           <a href="dashboard.html" class="nav-link active">Dashboard</a>
         </nav>
         <button id="btn-tema" class="btn btn-secondary" type="button">
           🌙 Escuro
         </button>
         <button id="btn-recarregar-dash" class="btn btn-secondary" type="button">
-          Atualizar dados
+          Atualizar
         </button>
       </div>
     </div>
@@ -121,8 +122,25 @@
     </section>
   </main>
 
+  <!-- Navegação inferior fixa no celular (PWA) -->
+  <nav class="bottom-nav" aria-label="Navegação mobile">
+    <a href="index.html" class="bottom-nav-link">
+      <span class="bottom-nav-icon" aria-hidden="true">💼</span>
+      <span>Carteira</span>
+    </a>
+    <a href="aportes.html" class="bottom-nav-link">
+      <span class="bottom-nav-icon" aria-hidden="true">➕</span>
+      <span>Aportes</span>
+    </a>
+    <a href="dashboard.html" class="bottom-nav-link active">
+      <span class="bottom-nav-icon" aria-hidden="true">📊</span>
+      <span>Dashboard</span>
+    </a>
+  </nav>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>

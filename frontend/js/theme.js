@@ -44,11 +44,13 @@
       });
     }
 
-    // Transição suave ao alternar entre Carteira e Dashboard
+    // Transição suave ao alternar entre Carteira, Aportes e Dashboard
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    const navLinks = document.querySelectorAll(".topnav .nav-link");
+    const navLinks = document.querySelectorAll(
+      ".topnav .nav-link, .bottom-nav .bottom-nav-link, a.nav-transition"
+    );
     navLinks.forEach((link) => {
       link.addEventListener("click", (event) => {
         if (

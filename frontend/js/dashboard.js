@@ -1,14 +1,12 @@
-const currencyFormatter = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
+const {
+  formatCurrency,
+  formatPercent,
+  formatMesLabel,
+  showFeedback,
+  renderKPIs,
+} = window.Utils;
 
-const numberFormatter = new Intl.NumberFormat("pt-BR", {
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 1,
-});
-
-const percentFormatter = new Intl.NumberFormat("pt-BR", {
+const percentNumberFormatter = new Intl.NumberFormat("pt-BR", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
@@ -35,8 +33,8 @@ const charts = {
   cdi: null,
 };
 
-let feedbackTimer = null;
 let ultimaCarteira = null;
+const elBtnRecarregar = document.getElementById("btn-recarregar-dash");
 
 function getChartTheme() {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
@@ -45,40 +43,6 @@ function getChartTheme() {
     gridColor: isDark ? "rgba(148, 163, 184, 0.14)" : "rgba(148, 163, 184, 0.25)",
     surfaceColor: isDark ? "#111827" : "#ffffff",
   };
-}
-
-// DOM
-const elFeedback = document.getElementById("feedback");
-const elBtnRecarregar = document.getElementById("btn-recarregar-dash");
-const elKpiPatrimonio = document.getElementById("kpi-patrimonio");
-const elKpiSubPatrimonio = document.getElementById("kpi-sub-patrimonio");
-const elKpiAportado = document.getElementById("kpi-aportado");
-const elKpiLucro = document.getElementById("kpi-lucro");
-const elKpiRentabilidade = document.getElementById("kpi-rentabilidade");
-const elKpiMaiorAlta = document.getElementById("kpi-maior-alta");
-const elKpiMaiorQueda = document.getElementById("kpi-maior-queda");
-
-function formatCurrency(value) {
-  return currencyFormatter.format(Number(value) || 0);
-}
-
-function formatPercent(value) {
-  const num = Number(value) || 0;
-  return `${num > 0 ? "+" : ""}${percentFormatter.format(num)}%`;
-}
-
-function formatMesLabel(anoMes) {
-  const [ano, mes] = String(anoMes).split("-");
-  return ano && mes ? `${mes}/${ano}` : anoMes;
-}
-
-function showFeedback(message, type = "error") {
-  clearTimeout(feedbackTimer);
-  elFeedback.textContent = message;
-  elFeedback.className = `feedback ${type}`;
-  feedbackTimer = setTimeout(() => {
-    elFeedback.classList.add("hidden");
-  }, 5000);
 }
 
 function destroyChart(key) {
@@ -93,33 +57,6 @@ function toggleEmpty(canvasId, emptyId, isEmpty) {
   document.getElementById(emptyId).classList.toggle("hidden", !isEmpty);
 }
 
-function renderKPIs(resumo) {
-  const patrimonio = Number(resumo?.patrimonio_total) || 0;
-  const aportado = Number(resumo?.total_aportado) || 0;
-  const lucro = Number(resumo?.lucro_prejuizo) || 0;
-  const rentPct = Number(resumo?.rentabilidade_total_pct) || 0;
-  const totalRV = Number(resumo?.total_rv) || 0;
-  const totalRF = Number(resumo?.total_rf) || 0;
-
-  elKpiPatrimonio.textContent = formatCurrency(patrimonio);
-  elKpiSubPatrimonio.textContent = `RV ${formatCurrency(totalRV)} · RF ${formatCurrency(totalRF)}`;
-  elKpiAportado.textContent = formatCurrency(aportado);
-
-  const lucroClass = lucro > 0 ? "pos" : lucro < 0 ? "neg" : "neu";
-  elKpiLucro.textContent = `${lucro > 0 ? "+" : ""}${formatCurrency(lucro)}`;
-  elKpiLucro.className = `summary-value ${lucroClass}`;
-  elKpiRentabilidade.textContent = formatPercent(rentPct);
-  elKpiRentabilidade.className = `kpi-sub ${lucroClass}`;
-
-  elKpiMaiorAlta.textContent = resumo?.maior_alta
-    ? `▲ ${resumo.maior_alta.codigo} ${formatPercent(resumo.maior_alta.rentabilidade_pct)}`
-    : "—";
-
-  elKpiMaiorQueda.textContent = resumo?.maior_queda
-    ? `▼ ${resumo.maior_queda.codigo} ${formatPercent(resumo.maior_queda.rentabilidade_pct)}`
-    : "—";
-}
-
 function renderChartClasses(alocacao) {
   destroyChart("classes");
   const entries = Object.entries(alocacao || {}).filter(([, val]) => val > 0);
@@ -131,8 +68,8 @@ function renderChartClasses(alocacao) {
   const labels = entries.map(([classe]) => CLASS_LABELS[classe] || classe);
   const data = entries.map(([, val]) => val);
   const colors = entries.map(([classe]) => CLASS_COLORS[classe] || "#64748b");
-
   const theme = getChartTheme();
+
   charts.classes = new Chart(document.getElementById("chart-classes"), {
     type: "doughnut",
     data: {
@@ -207,7 +144,7 @@ function renderChartPesos(ativosConsolidados) {
         tooltip: {
           callbacks: {
             label(ctx) {
-              return ` ${percentFormatter.format(ctx.raw)}% da carteira`;
+              return ` ${percentNumberFormatter.format(ctx.raw)}% da carteira`;
             },
           },
         },

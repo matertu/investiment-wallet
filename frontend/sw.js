@@ -1,12 +1,15 @@
-const CACHE_NAME = "carteira-mvp-v1";
+const CACHE_NAME = "carteira-mvp-v2";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
+  "/aportes.html",
   "/dashboard.html",
   "/css/style.css",
   "/js/theme.js",
   "/js/api.js",
+  "/js/utils.js",
   "/js/main.js",
+  "/js/aportes.js",
   "/js/dashboard.js",
   "/manifest.json",
   "/icons/icon-192.png",

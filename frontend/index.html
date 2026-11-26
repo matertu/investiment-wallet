@@ -15,19 +15,20 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <div>
-        <h1>Carteira de Investimentos</h1>
-        <p class="subtitle">Visão consolidada de Renda Variável, Renda Fixa e Aportes</p>
+        <h1>Carteira</h1>
+        <p class="subtitle">Visão consolidada de Renda Variável e Renda Fixa</p>
       </div>
       <div class="topbar-actions">
         <nav class="topnav" aria-label="Navegação principal">
           <a href="index.html" class="nav-link active">Carteira</a>
+          <a href="aportes.html" class="nav-link">Aportes</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
         </nav>
         <button id="btn-tema" class="btn btn-secondary" type="button">
           🌙 Escuro
         </button>
         <button id="btn-recarregar" class="btn btn-secondary" type="button">
-          Atualizar cotações
+          Atualizar
         </button>
       </div>
     </div>
@@ -63,8 +64,11 @@
     <!-- Bloco 1: Renda Variável -->
     <section class="card">
       <div class="section-header">
-        <h2>Renda Variável</h2>
-        <span class="badge-muted">Ações, FIIs e ETFs</span>
+        <div>
+          <h2>Renda Variável</h2>
+          <span class="badge-muted">Ações, FIIs e ETFs</span>
+        </div>
+        <a href="aportes.html" class="btn btn-primary btn-sm nav-transition">+ Novo Aporte</a>
       </div>
       <div class="table-wrapper">
         <table>
@@ -91,8 +95,10 @@
     <!-- Bloco 2: Renda Fixa -->
     <section class="card">
       <div class="section-header">
-        <h2>Renda Fixa</h2>
-        <span class="badge-muted">CDI/SELIC/IPCA</span>
+        <div>
+          <h2>Renda Fixa</h2>
+          <span class="badge-muted">Cálculo automático via Banco Central (CDI/SELIC/IPCA) ou manual</span>
+        </div>
       </div>
       <div class="table-wrapper">
         <table>
@@ -114,201 +120,23 @@
         </table>
       </div>
     </section>
-
-    <!-- Bloco 3: Sessão de Aportes -->
-    <section class="card">
-      <div class="section-header">
-        <h2>Sessão de Aportes</h2>
-        <span class="badge-muted">Cadastro de ativos e movimentações</span>
-      </div>
-
-      <div class="forms-grid">
-        <!-- Formulário: Novo Ativo -->
-        <form id="form-ativo" class="subcard">
-          <h3>Cadastrar Novo Ativo</h3>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="ativo-codigo">Código</label>
-              <input
-                id="ativo-codigo"
-                name="codigo"
-                type="text"
-                placeholder="Ex: BBAS3 ou CDB_120"
-                maxlength="30"
-                required
-              />
-            </div>
-
-            <div class="field">
-              <label for="ativo-classe">Classe</label>
-              <select id="ativo-classe" name="classe" required>
-                <option value="ACAO">Ação</option>
-                <option value="FII">FII</option>
-                <option value="ETF">ETF</option>
-                <option value="RENDA_FIXA">Renda Fixa</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="ativo-nome">Nome do Ativo</label>
-            <input
-              id="ativo-nome"
-              name="nome"
-              type="text"
-              placeholder="Ex: Banco do Brasil"
-              maxlength="100"
-              required
-            />
-          </div>
-
-          <div id="campos-rf" class="rf-fields hidden">
-            <div class="field-row">
-              <div class="field">
-                <label for="ativo-indexador">Indexador</label>
-                <select id="ativo-indexador" name="indexador">
-                  <option value="CDI">CDI</option>
-                  <option value="SELIC">SELIC</option>
-                  <option value="IPCA">IPCA</option>
-                  <option value="PREFIXADO">Prefixado</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label for="ativo-taxa" id="label-ativo-taxa">Percentual do CDI (%)</label>
-                <input
-                  id="ativo-taxa"
-                  name="taxa_percentual"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  placeholder="Ex: 100 ou 120"
-                />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="ativo-valor-inicial">Valor Inicial / Atual (R$)</label>
-              <input
-                id="ativo-valor-inicial"
-                name="valor_atual"
-                type="number"
-                step="0.01"
-                min="0"
-                value="0"
-                placeholder="0,00"
-              />
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Cadastrar Ativo</button>
-          </div>
-        </form>
-
-        <!-- Formulário: Novo Aporte / Edição -->
-        <form id="form-aporte" class="subcard">
-          <div class="subcard-header">
-            <h3 id="titulo-form-aporte">Registrar Aporte</h3>
-            <button
-              id="btn-cancelar-edicao"
-              type="button"
-              class="btn btn-ghost btn-sm hidden"
-            >
-              Cancelar edição
-            </button>
-          </div>
-
-          <input id="aporte-id" type="hidden" value="" />
-
-          <div class="field-row">
-            <div class="field">
-              <label for="aporte-ativo">Ativo</label>
-              <select id="aporte-ativo" name="ativo_id" required>
-                <option value="">Selecione um ativo...</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="aporte-tipo">Operação</label>
-              <select id="aporte-tipo" name="tipo" required>
-                <option value="APORTE">Aporte</option>
-                <option value="RESGATE">Resgate</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="aporte-quantidade">
-                Quantidade
-                <span id="hint-qtde-rf" class="field-hint hidden">(fixo em 1 para RF)</span>
-              </label>
-              <input
-                id="aporte-quantidade"
-                name="quantidade"
-                type="number"
-                step="any"
-                min="0.000001"
-                placeholder="Ex: 100"
-                required
-              />
-            </div>
-
-            <div class="field">
-              <label for="aporte-valor" id="label-aporte-valor">Valor Unitário (R$)</label>
-              <input
-                id="aporte-valor"
-                name="valor_unitario"
-                type="number"
-                step="0.0001"
-                min="0.0001"
-                placeholder="Ex: 28.50"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="aporte-data">Data da Operação</label>
-            <input id="aporte-data" name="data_aporte" type="date" />
-          </div>
-
-          <div class="form-actions">
-            <button id="btn-submit-aporte" type="submit" class="btn btn-primary">
-              Salvar Aporte
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Histórico de Aportes -->
-      <div class="history-block">
-        <h3>Histórico de Aportes</h3>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Ativo</th>
-                <th>Tipo</th>
-                <th class="num">Qtde</th>
-                <th class="num">Valor Unit.</th>
-                <th class="num">Total</th>
-                <th class="actions-col">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-aportes">
-              <tr>
-                <td colspan="7" class="empty-cell">Carregando...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
   </main>
+
+  <!-- Navegação inferior fixa no celular (PWA) -->
+  <nav class="bottom-nav" aria-label="Navegação mobile">
+    <a href="index.html" class="bottom-nav-link active">
+      <span class="bottom-nav-icon" aria-hidden="true">💼</span>
+      <span>Carteira</span>
+    </a>
+    <a href="aportes.html" class="bottom-nav-link">
+      <span class="bottom-nav-icon" aria-hidden="true">➕</span>
+      <span>Aportes</span>
+    </a>
+    <a href="dashboard.html" class="bottom-nav-link">
+      <span class="bottom-nav-icon" aria-hidden="true">📊</span>
+      <span>Dashboard</span>
+    </a>
+  </nav>
 
   <!-- Modal nativo para atualização rápida de saldo de Renda Fixa -->
   <dialog id="modal-saldo-rf" class="modal">
@@ -338,6 +166,7 @@
   </dialog>
 
   <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
