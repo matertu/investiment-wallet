@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Carteira de Investimentos</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/theme.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div>
+        <h1>Dashboard da Carteira</h1>
+        <p class="subtitle">Alocação, peso por ativo, evolução de aportes e comparativo com o CDI</p>
+      </div>
+      <div class="topbar-actions">
+        <nav class="topnav" aria-label="Navegação principal">
+          <a href="index.html" class="nav-link">Carteira</a>
+          <a href="dashboard.html" class="nav-link active">Dashboard</a>
+        </nav>
+        <button id="btn-tema" class="btn btn-secondary" type="button">
+          🌙 Escuro
+        </button>
+        <button id="btn-recarregar-dash" class="btn btn-secondary" type="button">
+          Atualizar dados
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="feedback" class="feedback hidden" role="status" aria-live="polite"></div>
+
+    <!-- KPIs no topo (linha única) -->
+    <section class="kpi-strip" aria-label="Indicadores da carteira">
+      <div class="summary-card">
+        <span class="summary-label">Patrimônio Total</span>
+        <strong id="kpi-patrimonio" class="summary-value">R$ 0,00</strong>
+        <span id="kpi-sub-patrimonio" class="kpi-sub">RV R$ 0,00 · RF R$ 0,00</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Total Aportado</span>
+        <strong id="kpi-aportado" class="summary-value">R$ 0,00</strong>
+        <span class="kpi-sub">Capital investido</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Lucro / Prejuízo</span>
+        <strong id="kpi-lucro" class="summary-value neu">R$ 0,00</strong>
+        <span id="kpi-rentabilidade" class="kpi-sub neu">0,00%</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Divisão RV vs RF</span>
+        <strong id="kpi-divisao" class="summary-value">0% RV · 0% RF</strong>
+        <span class="kpi-sub">Proporção atual</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Maior Alta / Queda</span>
+        <strong id="kpi-maior-alta" class="kpi-highlight pos">—</strong>
+        <span id="kpi-maior-queda" class="kpi-highlight neg">—</span>
+      </div>
+    </section>
+
+    <!-- Grid de Gráficos -->
+    <section class="charts-grid">
+      <article class="card chart-card">
+        <div class="section-header">
+          <h2>Alocação por Classe</h2>
+          <span class="badge-muted">Diversificação</span>
+        </div>
+        <div class="chart-box">
+          <canvas id="chart-classes"></canvas>
+          <p id="empty-classes" class="chart-empty hidden">Sem ativos em carteira.</p>
+        </div>
+      </article>
+
+      <article class="card chart-card">
+        <div class="section-header">
+          <h2>Peso por Ativo (%)</h2>
+          <span class="badge-muted">Alerta acima de 20%</span>
+        </div>
+        <div class="chart-box">
+          <canvas id="chart-pesos"></canvas>
+          <p id="empty-pesos" class="chart-empty hidden">Sem ativos em carteira.</p>
+        </div>
+      </article>
+
+      <article class="card chart-card">
+        <div class="section-header">
+          <h2>Aportado vs Valor Atual</h2>
+          <span class="badge-muted">Comparativo por ativo</span>
+        </div>
+        <div class="chart-box">
+          <canvas id="chart-comparativo"></canvas>
+          <p id="empty-comparativo" class="chart-empty hidden">Sem ativos em carteira.</p>
+        </div>
+      </article>
+
+      <article class="card chart-card">
+        <div class="section-header">
+          <h2>Aportes por Mês</h2>
+          <span class="badge-muted">Constância mensal</span>
+        </div>
+        <div class="chart-box">
+          <canvas id="chart-mensal"></canvas>
+          <p id="empty-mensal" class="chart-empty hidden">Nenhum aporte registrado.</p>
+        </div>
+      </article>
+
+      <article class="card chart-card chart-card-wide">
+        <div class="section-header">
+          <h2>Carteira vs CDI Acumulado (%)</h2>
+          <span class="badge-muted">Série oficial BCB desde o 1º aporte</span>
+        </div>
+        <div class="chart-box chart-box-tall">
+          <canvas id="chart-cdi"></canvas>
+          <p id="empty-cdi" class="chart-empty hidden">
+            Registre aportes com datas anteriores a hoje para comparar com o CDI.
+          </p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
