@@ -38,8 +38,8 @@ const elBtnSubmitAporte = document.getElementById("btn-submit-aporte");
 const elAporteId = document.getElementById("aporte-id");
 const elAporteAtivo = document.getElementById("aporte-ativo");
 const elAporteTipo = document.getElementById("aporte-tipo");
+const elFieldAporteQtde = document.getElementById("field-aporte-quantidade");
 const elAporteQtde = document.getElementById("aporte-quantidade");
-const elHintQtdeRF = document.getElementById("hint-qtde-rf");
 const elLabelAporteValor = document.getElementById("label-aporte-valor");
 const elAporteValor = document.getElementById("aporte-valor");
 const elAporteData = document.getElementById("aporte-data");
@@ -108,7 +108,7 @@ function renderAportes() {
         <tr>
           <td>${escapeHtml(formatDate(item.data_aporte))}</td>
           <td>
-            <span class="asset-code">${escapeHtml(codigo)}</span>
+            <span class="ticker-badge">${escapeHtml(codigo)}</span>
             ${nome ? `<span class="asset-name">${escapeHtml(nome)}</span>` : ""}
           </td>
           <td><span class="pill ${pillClass}">${escapeHtml(item.tipo)}</span></td>
@@ -170,12 +170,10 @@ function atualizarRegraQuantidadeRF() {
 
   if (isRF) {
     elAporteQtde.value = "1";
-    elAporteQtde.readOnly = true;
-    elHintQtdeRF.classList.remove("hidden");
+    elFieldAporteQtde.classList.add("hidden");
     elLabelAporteValor.textContent = "Valor do Aporte (R$)";
   } else {
-    elAporteQtde.readOnly = false;
-    elHintQtdeRF.classList.add("hidden");
+    elFieldAporteQtde.classList.remove("hidden");
     elLabelAporteValor.textContent = "Valor Unitário (R$)";
   }
 }
@@ -324,4 +322,8 @@ elTbodyAportes.addEventListener("click", async (event) => {
 });
 
 atualizarCamposRendaFixa();
+if (window.location.hash === "#novo-ativo") {
+  elDetalhesNovoAtivo.open = true;
+  elAtivoCodigo.focus();
+}
 carregarDados();

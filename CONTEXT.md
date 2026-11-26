@@ -1,6 +1,6 @@
-# Contexto do Projeto — Carteira de Investimentos
+# Contexto do Projeto — Acinonyx (Carteira de Investimentos)
 
-Documento de referência rápida sobre arquitetura, infraestrutura de deploy e decisões técnicas do projeto.
+Documento de referência rápida sobre arquitetura, infraestrutura de deploy, design system e decisões técnicas do projeto **Acinonyx**.
 
 ---
 
@@ -64,10 +64,24 @@ Arquitetura em camadas estritas (sem `HTTPException` nos `repositories/` ou `ser
 
 ## 4. Front-end (`frontend/`)
 
-- **`index.html` + `js/main.js`:** linha única de 5 KPIs no topo, tabela de Renda Variável (com Valor Aportado), tabela de Renda Fixa (com indicador Automático BCB / Manual e modal de atualização de saldo), cadastro de ativo, cadastro/edição de aportes e histórico.
-- **`dashboard.html` + `js/dashboard.js`:** mesmos 5 KPIs + 5 gráficos Chart.js (Alocação por Classe, Peso por Ativo %, Aportado vs Valor Atual, Aportes por Mês, Carteira vs CDI).
+### Estrutura e Páginas
+- **`index.html` + `js/main.js`:** linha única de 5 KPIs no topo, tabela de Renda Variável (com badge navy no ticker e Valor Aportado), tabela de Renda Fixa (com indicador Automático BCB / Manual e modal de atualização de saldo), histórico de aportes com ações de edição/exclusão e formulários em modais.
+- **`dashboard.html` + `js/dashboard.js`:** mesmos 5 KPIs + 5 gráficos Chart.js (Alocação por Classe, Peso por Ativo %, Aportado vs Valor Atual, Aportes por Mês, Carteira vs CDI) usando a paleta do Acinonyx.
 - **`js/api.js`:** cliente `fetch()` que aponta automaticamente para `http://127.0.0.1:8000` localmente e para `https://carteira-investimentos-api-sigma.vercel.app` em produção.
 - **`js/theme.js` + `css/style.css`:** modo claro/escuro persistido em `localStorage`, layout responsivo para mobile e atualização dinâmica dos temas dos gráficos.
+
+### Requisitos de UI/UX (Design System Acinonyx)
+- **Marca e Assets:** Logo `frontend/assets/logo.png` (guepardo verde-oliva sobre barras azul-marinho) exibida no header (com fundo `#FFFFFF` no modo claro para integração limpa) e aplicada como favicon.
+- **Paleta (CSS Variables):**
+  - Primária (Navy): `#1E3250` (cabeçalhos, badges de tickers, botões secundários, séries principais dos gráficos).
+  - Destaque (Oliva): `#9DA347` (CTA principal `+ Novo Aporte`, estados ativos, foco e séries secundárias dos gráficos).
+  - Neutros (Modo Claro): fundo `#F7F8FA`, superfícies `#FFFFFF`, bordas `#E2E8F0`, texto `#1E293B` / `#64748B` (com equivalentes harmônicos no modo escuro via `theme.js`).
+  - Semânticas: `#16A34A` (positivo) e `#DC2626` (negativo).
+- **Tipografia e Geometria:** Fonte `Inter` (Google Fonts), `font-variant-numeric: tabular-nums` em todos os valores monetários/percentuais, `border-radius: 12px` em cards/modais e `8px` em botões/inputs.
+- **Fluxos e Interações:**
+  - **Header:** Logo + **Acinonyx** e navegação (`Carteira` / `Dashboard`) à esquerda; toggle de tema, `+ Novo Ativo` (outline navy) e `+ Novo Aporte` (CTA oliva) à direita.
+  - **Modais Inteligentes:** Modal de *Novo Ativo* exibe campos de RF (`indexador`, `taxa_percentual`, `valor_inicial`) apenas quando `classe === 'RENDA_FIXA'`; Modal de *Aporte* oculta `quantidade` (enviando `1`) e renomeia o label para "Valor do Aporte" quando o ativo selecionado for `RENDA_FIXA`.
+  - **Feedback:** Formatação monetária em BRL (`Intl.NumberFormat('pt-BR')`), estado de *loading* sutil e notificações *toast* para sucesso/erro (ex: `409` de ticker duplicado).
 
 ---
 

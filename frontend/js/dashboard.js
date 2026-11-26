@@ -19,10 +19,10 @@ const CLASS_LABELS = {
 };
 
 const CLASS_COLORS = {
-  ACAO: "#2563eb",
-  FII: "#0ea5e9",
-  ETF: "#8b5cf6",
-  RENDA_FIXA: "#16a34a",
+  ACAO: "#1E3250",
+  FII: "#3B6291",
+  ETF: "#64748B",
+  RENDA_FIXA: "#9DA347",
 };
 
 const charts = {
@@ -41,7 +41,12 @@ function getChartTheme() {
   return {
     textColor: isDark ? "#cbd5e1" : "#475569",
     gridColor: isDark ? "rgba(148, 163, 184, 0.14)" : "rgba(148, 163, 184, 0.25)",
-    surfaceColor: isDark ? "#111827" : "#ffffff",
+    surfaceColor: isDark ? "#142033" : "#ffffff",
+    navy: isDark ? "#4F7AB3" : "#1E3250",
+    navyFill: isDark ? "rgba(79, 122, 179, 0.16)" : "rgba(30, 50, 80, 0.1)",
+    olive: isDark ? "#B3B959" : "#9DA347",
+    muted: isDark ? "#64748B" : "#94A3B8",
+    danger: isDark ? "#F87171" : "#DC2626",
   };
 }
 
@@ -120,6 +125,7 @@ function renderChartPesos(ativosConsolidados) {
     }))
     .sort((a, b) => b.peso - a.peso);
 
+  const theme = getChartTheme();
   charts.pesos = new Chart(document.getElementById("chart-pesos"), {
     type: "bar",
     data: {
@@ -129,7 +135,7 @@ function renderChartPesos(ativosConsolidados) {
           label: "Peso na carteira (%)",
           data: ordenados.map((i) => i.peso),
           backgroundColor: ordenados.map((i) =>
-            i.peso > 20 ? "#dc2626" : "#2563eb"
+            i.peso > 20 ? theme.danger : theme.navy
           ),
           borderRadius: 6,
         },
@@ -165,6 +171,7 @@ function renderChartComparativo(ativosConsolidados) {
   toggleEmpty("chart-comparativo", "empty-comparativo", isEmpty);
   if (isEmpty) return;
 
+  const theme = getChartTheme();
   charts.comparativo = new Chart(document.getElementById("chart-comparativo"), {
     type: "bar",
     data: {
@@ -173,13 +180,13 @@ function renderChartComparativo(ativosConsolidados) {
         {
           label: "Aportado",
           data: ativosConsolidados.map((a) => a.totalInvestido),
-          backgroundColor: "#94a3b8",
+          backgroundColor: theme.muted,
           borderRadius: 5,
         },
         {
           label: "Valor Atual",
           data: ativosConsolidados.map((a) => a.valorAtual),
-          backgroundColor: "#2563eb",
+          backgroundColor: theme.navy,
           borderRadius: 5,
         },
       ],
@@ -213,6 +220,7 @@ function renderChartMensal(aportesPorMes) {
   toggleEmpty("chart-mensal", "empty-mensal", isEmpty);
   if (isEmpty) return;
 
+  const theme = getChartTheme();
   charts.mensal = new Chart(document.getElementById("chart-mensal"), {
     type: "bar",
     data: {
@@ -221,13 +229,13 @@ function renderChartMensal(aportesPorMes) {
         {
           label: "Aportes",
           data: aportesPorMes.map((m) => m.total_aportado),
-          backgroundColor: "#16a34a",
+          backgroundColor: theme.olive,
           borderRadius: 5,
         },
         {
           label: "Resgates",
           data: aportesPorMes.map((m) => m.total_resgatado),
-          backgroundColor: "#ef4444",
+          backgroundColor: theme.danger,
           borderRadius: 5,
         },
       ],
@@ -261,6 +269,7 @@ function renderChartCDI(comparativoCDI) {
   toggleEmpty("chart-cdi", "empty-cdi", isEmpty);
   if (isEmpty) return;
 
+  const theme = getChartTheme();
   charts.cdi = new Chart(document.getElementById("chart-cdi"), {
     type: "line",
     data: {
@@ -269,8 +278,8 @@ function renderChartCDI(comparativoCDI) {
         {
           label: "Carteira (%)",
           data: comparativoCDI.map((p) => p.carteira_pct),
-          borderColor: "#2563eb",
-          backgroundColor: "rgba(37, 99, 235, 0.1)",
+          borderColor: theme.navy,
+          backgroundColor: theme.navyFill,
           borderWidth: 2.5,
           tension: 0.25,
           fill: true,
@@ -278,7 +287,7 @@ function renderChartCDI(comparativoCDI) {
         {
           label: "CDI Acumulado (%)",
           data: comparativoCDI.map((p) => p.cdi_pct),
-          borderColor: "#16a34a",
+          borderColor: theme.olive,
           backgroundColor: "transparent",
           borderWidth: 2,
           borderDash: [6, 4],

@@ -1,13 +1,13 @@
 {
-  "name": "Carteira de Investimentos",
-  "short_name": "Carteira",
+  "name": "Acinonyx — Carteira de Investimentos",
+  "short_name": "Acinonyx",
   "description": "Acompanhamento consolidado de Renda Variável, Renda Fixa e Aportes",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0b1120",
-  "theme_color": "#2563eb",
+  "background_color": "#0d1522",
+  "theme_color": "#1e3250",
   "icons": [
     {
       "src": "icons/icon-192.png",

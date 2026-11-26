@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#2563eb" />
-  <title>Aportes — Carteira de Investimentos</title>
+  <meta name="theme-color" content="#1e3250" />
+  <title>Acinonyx — Aportes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
@@ -14,20 +20,25 @@
 <body>
   <header class="topbar">
     <div class="container topbar-inner">
-      <div>
-        <h1>Aportes &amp; Ativos</h1>
-        <p class="subtitle">Lançamentos de aportes, resgates e cadastro de novos ativos</p>
-      </div>
-      <div class="topbar-actions">
+      <div class="topbar-left">
+        <a href="index.html" class="brand nav-transition">
+          <img src="icons/icon-192.png" alt="Logo Acinonyx" class="brand-logo" />
+          <span class="brand-text">
+            <span class="brand-name">Acinonyx</span>
+            <span class="brand-tagline">Aportes &amp; Ativos</span>
+          </span>
+        </a>
         <nav class="topnav" aria-label="Navegação principal">
           <a href="index.html" class="nav-link">Carteira</a>
           <a href="aportes.html" class="nav-link active">Aportes</a>
           <a href="dashboard.html" class="nav-link">Dashboard</a>
         </nav>
-        <button id="btn-tema" class="btn btn-secondary" type="button">
+      </div>
+      <div class="topbar-actions">
+        <button id="btn-tema" class="btn btn-secondary btn-sm" type="button">
           🌙 Escuro
         </button>
-        <button id="btn-recarregar-aportes" class="btn btn-secondary" type="button">
+        <button id="btn-recarregar-aportes" class="btn btn-secondary btn-sm" type="button">
           Atualizar
         </button>
       </div>
@@ -71,11 +82,8 @@
         </div>
 
         <div class="field-row field-row-3">
-          <div class="field">
-            <label for="aporte-quantidade">
-              Quantidade
-              <span id="hint-qtde-rf" class="field-hint hidden">(fixo em 1 para RF)</span>
-            </label>
+          <div class="field" id="field-aporte-quantidade">
+            <label for="aporte-quantidade">Quantidade</label>
             <input
               id="aporte-quantidade"
               name="quantidade"

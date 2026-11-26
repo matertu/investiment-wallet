@@ -1,4 +1,4 @@
-const CACHE_NAME = "carteira-mvp-v2";
+const CACHE_NAME = "acinonyx-v3";
 const STATIC_ASSETS = [
   "/",
   "/index.html",

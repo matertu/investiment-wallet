@@ -34,7 +34,7 @@ function renderRendaVariavel(items) {
       return `
         <tr>
           <td>
-            <span class="asset-code">${escapeHtml(item.codigo)}</span>
+            <span class="ticker-badge">${escapeHtml(item.codigo)}</span>
             <span class="asset-name">${escapeHtml(item.nome)} · ${escapeHtml(item.classe)}</span>
           </td>
           <td class="num">${formatNumber(item.quantidade_total)}</td>
@@ -81,7 +81,7 @@ function renderRendaFixa(items) {
           <td class="actions-col">
             <button
               type="button"
-              class="btn btn-secondary btn-sm btn-atualizar-rf"
+              class="btn btn-outline-navy btn-sm btn-atualizar-rf"
               data-ativo-id="${item.ativo_id}"
               data-label="${escapeHtml(label)}"
               data-valor="${Number(item.valor_atual) || 0}"
