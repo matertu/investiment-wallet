@@ -28,7 +28,6 @@ const elKpiSubPatrimonio = document.getElementById("kpi-sub-patrimonio");
 const elKpiAportado = document.getElementById("kpi-aportado");
 const elKpiLucro = document.getElementById("kpi-lucro");
 const elKpiRentabilidade = document.getElementById("kpi-rentabilidade");
-const elKpiDivisao = document.getElementById("kpi-divisao");
 const elKpiMaiorAlta = document.getElementById("kpi-maior-alta");
 const elKpiMaiorQueda = document.getElementById("kpi-maior-queda");
 const elTbodyRV = document.getElementById("tbody-rv");
@@ -127,8 +126,6 @@ function renderResumo(resumo) {
   const rentPct = Number(resumo?.rentabilidade_total_pct) || 0;
   const totalRV = Number(resumo?.total_rv) || 0;
   const totalRF = Number(resumo?.total_rf) || 0;
-  const pctRV = Number(resumo?.pct_rv) || 0;
-  const pctRF = Number(resumo?.pct_rf) || 0;
 
   elKpiPatrimonio.textContent = formatCurrency(patrimonio);
   elKpiSubPatrimonio.textContent = `RV ${formatCurrency(totalRV)} · RF ${formatCurrency(totalRF)}`;
@@ -139,8 +136,6 @@ function renderResumo(resumo) {
   elKpiLucro.className = `summary-value ${lucroClass}`;
   elKpiRentabilidade.textContent = formatPercent(rentPct);
   elKpiRentabilidade.className = `kpi-sub ${lucroClass}`;
-
-  elKpiDivisao.textContent = `${numberFormatter.format(pctRV)}% RV · ${numberFormatter.format(pctRF)}% RF`;
 
   if (resumo?.maior_alta) {
     elKpiMaiorAlta.textContent = `▲ ${resumo.maior_alta.codigo} ${formatPercent(resumo.maior_alta.rentabilidade_pct)}`;
