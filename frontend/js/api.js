@@ -1,4 +1,11 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const isLocal =
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname === "localhost" ||
+  window.location.protocol === "file:";
+
+const API_BASE_URL = isLocal
+  ? "http://127.0.0.1:8000"
+  : "https://carteira-investimentos-api-sigma.vercel.app";
 
 async function request(path, options = {}) {
   const config = {
