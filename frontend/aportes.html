@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
   <link rel="manifest" href="manifest.json" />
@@ -35,6 +35,15 @@
         </nav>
       </div>
       <div class="topbar-actions">
+        <button
+          id="btn-privacidade"
+          class="btn btn-secondary btn-sm btn-icon"
+          type="button"
+          title="Ocultar ou mostrar valores"
+          aria-label="Ocultar valores"
+        >
+          👁️
+        </button>
         <button id="btn-tema" class="btn btn-secondary btn-sm" type="button">
           🌙 Escuro
         </button>
@@ -242,7 +251,7 @@
           </thead>
           <tbody id="tbody-aportes">
             <tr>
-              <td colspan="7" class="empty-cell">Carregando...</td>
+              <td colspan="7"><span class="skeleton-bar"></span></td>
             </tr>
           </tbody>
         </table>

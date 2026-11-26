@@ -1,8 +1,9 @@
 (function () {
-  const STORAGE_KEY = "carteira-theme";
+  const THEME_KEY = "carteira-theme";
+  const PRIVACY_KEY = "acinonyx-privacy";
 
   function getPreferredTheme() {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(THEME_KEY);
     if (saved === "dark" || saved === "light") {
       return saved;
     }
@@ -11,9 +12,13 @@
       : "light";
   }
 
+  function getPreferredPrivacy() {
+    return localStorage.getItem(PRIVACY_KEY) === "hidden" ? "hidden" : "visible";
+  }
+
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+    localStorage.setItem(THEME_KEY, theme);
 
     const btn = document.getElementById("btn-tema");
     if (btn) {
@@ -27,20 +32,53 @@
     window.dispatchEvent(new CustomEvent("themechange", { detail: { theme } }));
   }
 
-  // Aplica imediatamente para evitar flash de tema ao carregar
+  function applyPrivacy(mode) {
+    document.documentElement.setAttribute("data-privacy", mode);
+    localStorage.setItem(PRIVACY_KEY, mode);
+
+    const btn = document.getElementById("btn-privacidade");
+    if (btn) {
+      btn.textContent = mode === "hidden" ? "🙈" : "👁️";
+      btn.setAttribute(
+        "aria-label",
+        mode === "hidden" ? "Mostrar valores" : "Ocultar valores"
+      );
+      btn.setAttribute(
+        "title",
+        mode === "hidden" ? "Mostrar valores" : "Ocultar valores"
+      );
+    }
+  }
+
+  // Aplica imediatamente para evitar flash de tema/privacidade ao carregar
   const initialTheme = getPreferredTheme();
+  const initialPrivacy = getPreferredPrivacy();
   document.documentElement.setAttribute("data-theme", initialTheme);
+  document.documentElement.setAttribute("data-privacy", initialPrivacy);
 
   window.addEventListener("DOMContentLoaded", () => {
     applyTheme(initialTheme);
-    const btn = document.getElementById("btn-tema");
-    if (btn) {
-      btn.addEventListener("click", () => {
+    applyPrivacy(initialPrivacy);
+
+    const btnTema = document.getElementById("btn-tema");
+    if (btnTema) {
+      btnTema.addEventListener("click", () => {
         const current =
           document.documentElement.getAttribute("data-theme") === "dark"
             ? "dark"
             : "light";
         applyTheme(current === "dark" ? "light" : "dark");
+      });
+    }
+
+    const btnPriv = document.getElementById("btn-privacidade");
+    if (btnPriv) {
+      btnPriv.addEventListener("click", () => {
+        const current =
+          document.documentElement.getAttribute("data-privacy") === "hidden"
+            ? "hidden"
+            : "visible";
+        applyPrivacy(current === "hidden" ? "visible" : "hidden");
       });
     }
 

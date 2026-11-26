@@ -64,24 +64,24 @@ Arquitetura em camadas estritas (sem `HTTPException` nos `repositories/` ou `ser
 
 ## 4. Front-end (`frontend/`)
 
-### Estrutura e Páginas
-- **`index.html` + `js/main.js`:** linha única de 5 KPIs no topo, tabela de Renda Variável (com badge navy no ticker e Valor Aportado), tabela de Renda Fixa (com indicador Automático BCB / Manual e modal de atualização de saldo), histórico de aportes com ações de edição/exclusão e formulários em modais.
-- **`dashboard.html` + `js/dashboard.js`:** mesmos 5 KPIs + 5 gráficos Chart.js (Alocação por Classe, Peso por Ativo %, Aportado vs Valor Atual, Aportes por Mês, Carteira vs CDI) usando a paleta do Acinonyx.
+### Estrutura e Páginas (3 telas + PWA)
+- **`index.html` + `js/main.js`:** tela de acompanhamento rápido com Hero Card de Patrimônio (com barra visual RV/RF) + 3 KPIs nítidos, tabela de Renda Variável (com linha de totais com acento Navy, badge navy no ticker, Valor Aportado, `Rentab. R$` e pílulas `▲`/`▼` em `Rentab. %`), tabela de Renda Fixa (com linha de totais com acento Oliva, indicador Automático BCB / Manual e modal de atualização de saldo).
+- **`aportes.html` + `js/aportes.js`:** tela de operações com formulário **Registrar / Editar Aporte** no topo (ocultando `quantidade` e renomeando para "Valor do Aporte" quando o ativo for `RENDA_FIXA`), bloco recolhível **+ Cadastrar Novo Ativo** e **Histórico de Aportes** com filtros por ativo/operação e ações Editar/Excluir.
+- **`dashboard.html` + `js/dashboard.js`:** mesmos KPIs + 5 gráficos Chart.js (Alocação por Classe, Peso por Ativo %, Aportado vs Valor Atual, Aportes por Mês, Carteira vs CDI) usando a paleta Acinonyx.
 - **`js/api.js`:** cliente `fetch()` que aponta automaticamente para `http://127.0.0.1:8000` localmente e para `https://carteira-investimentos-api-sigma.vercel.app` em produção.
-- **`js/theme.js` + `css/style.css`:** modo claro/escuro persistido em `localStorage`, layout responsivo para mobile e atualização dinâmica dos temas dos gráficos.
+- **`js/utils.js`:** utilitários compartilhados (formatadores `pt-BR`, `escapeHtml`, `showFeedback` toast, `renderKPIs` + barra RV/RF, `renderSkeletonRows`).
+- **`js/theme.js` + `css/style.css`:** modo claro/escuro (**Midnight Acinonyx**) persistido em `localStorage`, modo privacidade (`👁️` borrando valores monetários `.money-val` mantendo percentuais visíveis), transições suaves entre páginas e registro do Service Worker PWA (`sw.js`, `manifest.json`).
 
-### Requisitos de UI/UX (Design System Acinonyx)
-- **Marca e Assets:** Logo `frontend/assets/logo.png` (guepardo verde-oliva sobre barras azul-marinho) exibida no header (com fundo `#FFFFFF` no modo claro para integração limpa) e aplicada como favicon.
+### Requisitos de UI/UX (Design System Acinonyx — Precision Fintech)
+- **Marca e Assets:** Logo `frontend/icons/icon-192.png` (guepardo verde-oliva sobre barras azul-marinho) exibida no header à esquerda com **Acinonyx** (fundo `#FFFFFF` arredondado) e usada como favicon e ícone PWA (`192x192` e `512x512`).
 - **Paleta (CSS Variables):**
-  - Primária (Navy): `#1E3250` (cabeçalhos, badges de tickers, botões secundários, séries principais dos gráficos).
-  - Destaque (Oliva): `#9DA347` (CTA principal `+ Novo Aporte`, estados ativos, foco e séries secundárias dos gráficos).
-  - Neutros (Modo Claro): fundo `#F7F8FA`, superfícies `#FFFFFF`, bordas `#E2E8F0`, texto `#1E293B` / `#64748B` (com equivalentes harmônicos no modo escuro via `theme.js`).
-  - Semânticas: `#16A34A` (positivo) e `#DC2626` (negativo).
-- **Tipografia e Geometria:** Fonte `Inter` (Google Fonts), `font-variant-numeric: tabular-nums` em todos os valores monetários/percentuais, `border-radius: 12px` em cards/modais e `8px` em botões/inputs.
-- **Fluxos e Interações:**
-  - **Header:** Logo + **Acinonyx** e navegação (`Carteira` / `Dashboard`) à esquerda; toggle de tema, `+ Novo Ativo` (outline navy) e `+ Novo Aporte` (CTA oliva) à direita.
-  - **Modais Inteligentes:** Modal de *Novo Ativo* exibe campos de RF (`indexador`, `taxa_percentual`, `valor_inicial`) apenas quando `classe === 'RENDA_FIXA'`; Modal de *Aporte* oculta `quantidade` (enviando `1`) e renomeia o label para "Valor do Aporte" quando o ativo selecionado for `RENDA_FIXA`.
-  - **Feedback:** Formatação monetária em BRL (`Intl.NumberFormat('pt-BR')`), estado de *loading* sutil e notificações *toast* para sucesso/erro (ex: `409` de ticker duplicado).
+  - Primária (Navy): `#1E3250` / Hero `#132238 → #1E3250` (Hero Card de Patrimônio, cabeçalhos, badges de tickers, botões outline navy, acento RV, séries principais dos gráficos).
+  - Destaque (Oliva): `#9DA347` no claro / `#C6CE5C` no escuro (CTA principal `+ Novo Aporte`, barra de composição RF, acento RF, foco de inputs, séries secundárias).
+  - Neutros (Modo Claro): fundo `#F4F6FA`, superfícies `#FFFFFF`, bordas `#DCE3EE`, texto principal de alto contraste `#0B1220`, secundário `#334155`, rótulos `#5B6B82`.
+  - Neutros (Modo Escuro — **Midnight Acinonyx**): fundo `#080E18`, superfícies `#101B2E`, bordas `#223452`, texto/valores `#FFFFFF`, rótulos `#8FA3BF`.
+  - Semânticas: `#15803D` / `#DC2626` (claro) e `#34D399` / `#FB7185` (escuro), exibidas em pílulas com setas `▲`/`▼`.
+- **Tipografia e Geometria:** Dupla tipográfica **`Plus Jakarta Sans`** (interface, títulos e marca) + **`JetBrains Mono`** (valores monetários, percentuais e tickers com `tabular-nums`); `border-radius: 12px` em cards/modais e `8px` em botões/inputs.
+- **Mobile & PWA:** Navegação inferior fixa (*bottom nav*) em `≤ 640px`, primeira coluna do ticker fixa (`position: sticky`) nas tabelas largas, skeleton shimmer no carregamento e notificações *toast* flutuantes.
 
 ---
 

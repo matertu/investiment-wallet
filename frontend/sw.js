@@ -1,4 +1,4 @@
-const CACHE_NAME = "acinonyx-v3";
+const CACHE_NAME = "acinonyx-v4";
 const STATIC_ASSETS = [
   "/",
   "/index.html",

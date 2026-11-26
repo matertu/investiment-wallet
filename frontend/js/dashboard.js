@@ -39,14 +39,14 @@ const elBtnRecarregar = document.getElementById("btn-recarregar-dash");
 function getChartTheme() {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
   return {
-    textColor: isDark ? "#cbd5e1" : "#475569",
+    textColor: isDark ? "#cbd5e1" : "#334155",
     gridColor: isDark ? "rgba(148, 163, 184, 0.14)" : "rgba(148, 163, 184, 0.25)",
-    surfaceColor: isDark ? "#142033" : "#ffffff",
-    navy: isDark ? "#4F7AB3" : "#1E3250",
-    navyFill: isDark ? "rgba(79, 122, 179, 0.16)" : "rgba(30, 50, 80, 0.1)",
-    olive: isDark ? "#B3B959" : "#9DA347",
+    surfaceColor: isDark ? "#101B2E" : "#ffffff",
+    navy: isDark ? "#60A5FA" : "#1E3250",
+    navyFill: isDark ? "rgba(96, 165, 250, 0.16)" : "rgba(30, 50, 80, 0.1)",
+    olive: isDark ? "#C6CE5C" : "#9DA347",
     muted: isDark ? "#64748B" : "#94A3B8",
-    danger: isDark ? "#F87171" : "#DC2626",
+    danger: isDark ? "#FB7185" : "#DC2626",
   };
 }
 
@@ -321,6 +321,7 @@ function renderizarTudo(carteira) {
   const theme = getChartTheme();
   Chart.defaults.color = theme.textColor;
   Chart.defaults.borderColor = theme.gridColor;
+  Chart.defaults.font.family = '"Plus Jakarta Sans", system-ui, sans-serif';
 
   const resumo = carteira.resumo || {};
   renderKPIs(resumo);

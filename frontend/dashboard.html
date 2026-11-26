@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
   <link rel="manifest" href="manifest.json" />
@@ -35,6 +35,15 @@
         </nav>
       </div>
       <div class="topbar-actions">
+        <button
+          id="btn-privacidade"
+          class="btn btn-secondary btn-sm btn-icon"
+          type="button"
+          title="Ocultar ou mostrar valores"
+          aria-label="Ocultar valores"
+        >
+          👁️
+        </button>
         <button id="btn-tema" class="btn btn-secondary btn-sm" type="button">
           🌙 Escuro
         </button>
@@ -54,27 +63,45 @@
   <main class="container">
     <div id="feedback" class="feedback hidden" role="status" aria-live="polite"></div>
 
-    <!-- KPIs no topo (linha única) -->
+    <!-- KPIs no topo (Hero Card Navy + 3 KPIs nítidos) -->
     <section class="kpi-strip" aria-label="Indicadores da carteira">
-      <div class="summary-card">
+      <div class="summary-card summary-card-hero">
         <span class="summary-label">Patrimônio Total</span>
-        <strong id="kpi-patrimonio" class="summary-value">R$ 0,00</strong>
-        <span id="kpi-sub-patrimonio" class="kpi-sub">RV R$ 0,00 · RF R$ 0,00</span>
+        <strong id="kpi-patrimonio" class="summary-value money-val">R$ 0,00</strong>
+        <div class="composition-bar" aria-label="Composição RV vs RF">
+          <div id="kpi-bar-rv" class="composition-rv" style="width: 50%"></div>
+          <div id="kpi-bar-rf" class="composition-rf" style="width: 50%"></div>
+        </div>
+        <div class="composition-legend">
+          <span>
+            <span class="legend-dot legend-dot-rv"></span>
+            <span id="kpi-legend-rv">RV 0%</span>
+          </span>
+          <span>
+            <span class="legend-dot legend-dot-rf"></span>
+            <span id="kpi-legend-rf">RF 0%</span>
+          </span>
+        </div>
       </div>
+
       <div class="summary-card">
         <span class="summary-label">Total Aportado</span>
-        <strong id="kpi-aportado" class="summary-value">R$ 0,00</strong>
+        <strong id="kpi-aportado" class="summary-value money-val">R$ 0,00</strong>
         <span class="kpi-sub">Capital investido</span>
       </div>
+
       <div class="summary-card">
         <span class="summary-label">Lucro / Prejuízo</span>
-        <strong id="kpi-lucro" class="summary-value neu">R$ 0,00</strong>
-        <span id="kpi-rentabilidade" class="kpi-sub neu">0,00%</span>
+        <strong id="kpi-lucro" class="summary-value money-val neu">R$ 0,00</strong>
+        <span id="kpi-rentabilidade" class="rent-pill rent-pill-neu">0,00%</span>
       </div>
+
       <div class="summary-card">
         <span class="summary-label">Maior Alta / Queda</span>
-        <strong id="kpi-maior-alta" class="kpi-highlight pos">—</strong>
-        <span id="kpi-maior-queda" class="kpi-highlight neg">—</span>
+        <div class="kpi-highlights-stack">
+          <span id="kpi-maior-alta" class="kpi-highlight pos">—</span>
+          <span id="kpi-maior-queda" class="kpi-highlight neg">—</span>
+        </div>
       </div>
     </section>
 

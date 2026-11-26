@@ -3,6 +3,7 @@ const {
   formatNumber,
   formatDate,
   escapeHtml,
+  renderSkeletonRows,
   showFeedback,
 } = window.Utils;
 
@@ -113,8 +114,8 @@ function renderAportes() {
           </td>
           <td><span class="pill ${pillClass}">${escapeHtml(item.tipo)}</span></td>
           <td class="num">${formatNumber(item.quantidade)}</td>
-          <td class="num">${formatCurrency(item.valor_unitario)}</td>
-          <td class="num">${formatCurrency(total)}</td>
+          <td class="num money-val">${formatCurrency(item.valor_unitario)}</td>
+          <td class="num num-strong money-val">${formatCurrency(total)}</td>
           <td class="actions-col">
             <div class="row-actions">
               <button
@@ -205,6 +206,7 @@ function entrarModoEdicaoAporte(aporte) {
 
 async function carregarDados() {
   elBtnRecarregar.disabled = true;
+  renderSkeletonRows(elTbodyAportes, 7, 3);
   try {
     const [ativos, carteira] = await Promise.all([
       window.API.getAtivos(),
@@ -217,6 +219,8 @@ async function carregarDados() {
     renderAportes();
   } catch (err) {
     showFeedback(err.message, "error");
+    elTbodyAportes.innerHTML =
+      '<tr><td colspan="7" class="empty-cell">Erro ao carregar histórico.</td></tr>';
   } finally {
     elBtnRecarregar.disabled = false;
   }
