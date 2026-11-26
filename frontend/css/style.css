@@ -44,6 +44,40 @@
   box-sizing: border-box;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(page-content) {
+  animation: pageFadeOut 160ms ease both;
+}
+
+::view-transition-new(page-content) {
+  animation: pageEnter 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -52,6 +86,27 @@ body {
   color: var(--text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+main {
+  view-transition-name: page-content;
+  animation: pageEnter 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+main.page-leaving {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main,
+  ::view-transition-old(page-content),
+  ::view-transition-new(page-content) {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 .container {
@@ -67,6 +122,8 @@ body {
   border-bottom: 1px solid var(--border);
   padding: 1.25rem 0;
   margin-bottom: 1.5rem;
+  view-transition-name: topbar;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .topbar-inner {

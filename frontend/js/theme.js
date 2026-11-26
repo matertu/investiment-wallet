@@ -43,5 +43,45 @@
         applyTheme(current === "dark" ? "light" : "dark");
       });
     }
+
+    // Transição suave ao alternar entre Carteira e Dashboard
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const navLinks = document.querySelectorAll(".topnav .nav-link");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (
+          prefersReducedMotion ||
+          link.classList.contains("active") ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey ||
+          event.button !== 0
+        ) {
+          return;
+        }
+        const href = link.getAttribute("href");
+        if (!href) return;
+
+        event.preventDefault();
+        const main = document.querySelector("main");
+        if (main) {
+          main.classList.add("page-leaving");
+        }
+        setTimeout(() => {
+          window.location.href = href;
+        }, 140);
+      });
+    });
+  });
+
+  // Garante que o conteúdo volte visível ao usar o botão Voltar do navegador (bfcache)
+  window.addEventListener("pageshow", () => {
+    const main = document.querySelector("main");
+    if (main) {
+      main.classList.remove("page-leaving");
+    }
   });
 })();
