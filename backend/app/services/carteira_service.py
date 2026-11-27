@@ -1,10 +1,10 @@
-from datetime import date
 from typing import Any
 
 from app.clients.bcb_client import (
     SERIE_POR_INDEXADOR,
     buscar_serie_bcb,
     calcular_fator_acumulado_rf,
+    hoje_brasilia,
 )
 from app.clients.brapi_client import buscar_cotacao
 from app.core.enums import ClasseAtivo, IndexadorRF, TipoOperacao
@@ -71,7 +71,7 @@ def _calcular_valor_atual_rf_auto(
     if not aportes_ativo:
         return None
 
-    hoje = date.today()
+    hoje = hoje_brasilia()
     valor_acumulado = 0.0
 
     for aporte in aportes_ativo:
@@ -116,8 +116,11 @@ def _montar_item_renda_fixa(
     if valor_auto is not None:
         valor_atual = valor_auto
         calculado_auto = True
-    else:
+    elif valor_manual > 0:
         valor_atual = valor_manual
+        calculado_auto = False
+    else:
+        valor_atual = total_investido
         calculado_auto = False
 
     rentabilidade_pct = _calcular_rentabilidade_pct(total_investido, valor_atual)
@@ -171,7 +174,7 @@ def _calcular_comparativo_cdi(
         return []
 
     primeira_data = min(item.data_aporte for item in aportes)
-    hoje = date.today()
+    hoje = hoje_brasilia()
     if primeira_data >= hoje:
         mes_atual = hoje.strftime("%Y-%m")
         return [
@@ -188,7 +191,13 @@ def _calcular_comparativo_cdi(
         hoje,
     )
     if not registros_cdi:
-        return []
+        return [
+            PontoComparativoCDI(
+                mes=hoje.strftime("%Y-%m"),
+                cdi_pct=0.0,
+                carteira_pct=round(rentabilidade_total_pct, 2),
+            )
+        ]
 
     fator_por_mes: dict[str, float] = {}
     fator_acumulado = 1.0

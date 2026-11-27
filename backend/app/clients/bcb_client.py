@@ -1,13 +1,19 @@
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 import time
 
 import requests
 
 from app.core.enums import IndexadorRF
 
+BRT = timezone(timedelta(hours=-3))
 BCB_SGS_URL: str = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.{serie}/dados"
 REQUEST_TIMEOUT_SECONDS: int = 8
 CACHE_TTL_SECONDS: int = 3600
+
+
+def hoje_brasilia() -> date:
+    """Retorna a data atual no horário de Brasília (UTC-3), independente do fuso do servidor."""
+    return datetime.now(BRT).date()
 
 SERIE_POR_INDEXADOR: dict[IndexadorRF, int] = {
     IndexadorRF.CDI: 12,
@@ -46,6 +52,11 @@ def _buscar_bloco_bcb(
             headers=headers,
             timeout=REQUEST_TIMEOUT_SECONDS,
         )
+        # BCB SGS retorna 404 (Value(s) not found) quando não há taxa publicada
+        # no intervalo (ex: aporte recente, fim de semana ou feriado).
+        if response.status_code == 404:
+            return []
+
         response.raise_for_status()
         payload = response.json()
         if not isinstance(payload, list):
@@ -75,7 +86,7 @@ def buscar_serie_bcb(
 
     Retorna lista de (data, valor_percentual) ou None em caso de erro de rede/API.
     """
-    fim = data_final or date.today()
+    fim = data_final or hoje_brasilia()
     if data_inicial > fim:
         return []
 
@@ -116,7 +127,7 @@ def calcular_fator_acumulado_rf(
 
     Retorna None se a consulta ao Banco Central falhar.
     """
-    fim = data_final or date.today()
+    fim = data_final or hoje_brasilia()
     dias_corridos = (fim - data_inicial).days
     if dias_corridos <= 0:
         return 1.0
